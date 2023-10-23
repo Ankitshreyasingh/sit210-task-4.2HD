@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LED Control</title>
+  <!-- Add Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container mt-5">
+    <h1 class="mb-4">LED Control</h1>
+
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="led1Checkbox">
+      <label class="form-check-label" for="led1Checkbox">
+        LED 1
+      </label>
+    </div>
+
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="led2Checkbox">
+      <label class="form-check-label" for="led2Checkbox">
+        LED 2
+      </label>
+    </div>
+
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="led3Checkbox">
+      <label class="form-check-label" for="led3Checkbox">
+        LED 3
+      </label>
+    </div>
+  </div>
+
+  <!-- Add Bootstrap and jQuery scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // When any checkbox is clicked
+    const checkboxes = document.querySelectorAll('.form-check-input');
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener('click', async () => {
+        const led1 = document.getElementById('led1Checkbox').checked ? 1 : 0;
+        const led2 = document.getElementById('led2Checkbox').checked ? 1 : 0;
+        const led3 = document.getElementById('led3Checkbox').checked ? 1 : 0;
+
+        // Send a POST request to your Node.js server to control the LEDs
+        try {
+          const response = await fetch('/control-leds', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ led1, led2, led3 })
+          });
+
+          if (response.ok) {
+            console.log('LEDs controlled successfully!');
+          } else {
+            console.error('Failed to control LEDs.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
